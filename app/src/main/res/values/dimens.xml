@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="error_text_size">20sp</dimen>
+    <dimen name="error_button_top_margin">10dp</dimen>
+    <dimen name="heading_large_size">42sp</dimen>
+    <dimen name="heading_medium_size">28sp</dimen>
+    <dimen name="heading_sub_large_size">24sp</dimen>
+    <dimen name="heading_sub_medium_size">20sp</dimen>
+    <dimen name="heading_sub_small_size">16sp</dimen>
+    <dimen name="content_text_size">20sp</dimen>
+    <dimen name="detail_container_padding">25dp</dimen>
+    <dimen name="detail_container_margin">5dp</dimen>
+    <dimen name="detail_thumbnail_margin">30dp</dimen>
+    <dimen name="detail_thumbnail_width">120dp</dimen>
+    <dimen name="detail_thumbnail_height">180dp</dimen>
+    <dimen name="detail_separator_margin">25dp</dimen>
+    <dimen name="detail_separator_height">1dp</dimen>
+    <dimen name="review_separator_margin">10dp</dimen>
+    <dimen name="review_separator_height">1dp</dimen>
+    <dimen name="trailer_separator_margin">10dp</dimen>
+    <dimen name="trailer_separator_height">1dp</dimen>
+    <dimen name="trailer_play_padding">25dp</dimen>
+    <dimen name="detail_padding_wide">40dp</dimen>
+    <dimen name="detail_padding_narrow">15dp</dimen>
+</resources>
