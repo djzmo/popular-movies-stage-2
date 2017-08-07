@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        if(NetworkUtils.API_KEY.equals("YOUR_API_KEY"))
+        if(getString(R.string.API_KEY).equals("YOUR_API_KEY"))
             showErrorMessage(getString(R.string.api_key_not_set), false);
         else if(savedInstanceState == null)
             loadMovieData(mCurrentDisplay);

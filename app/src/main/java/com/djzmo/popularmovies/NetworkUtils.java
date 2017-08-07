@@ -17,7 +17,6 @@ public class NetworkUtils {
     public final static String TRAILERS_ENDPOINT = "/movie/{id}/videos";
     public final static String REVIEWS_ENDPOINT = "/movie/{id}/reviews";
     public final static String THUMBNAIL_BASE_URL = "http://image.tmdb.org/t/p";
-    public final static String API_KEY = "YOUR_API_KEY";
 
     private final static String API_KEY_QUERY = "api_key";
 
@@ -27,9 +26,9 @@ public class NetworkUtils {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    protected static URL buildCommonApiUrl(String urlString) {
+    protected static URL buildCommonApiUrl(Context c, String urlString) {
         Uri uri = Uri.parse(urlString).buildUpon()
-                .appendQueryParameter(API_KEY_QUERY, API_KEY)
+                .appendQueryParameter(API_KEY_QUERY, c.getString(R.string.API_KEY))
                 .build();
         URL url = null;
 
@@ -43,30 +42,30 @@ public class NetworkUtils {
         return url;
     }
 
-    public static URL getPopularUrl() {
-        return buildCommonApiUrl(API_BASE_URL + POPULAR_ENDPOINT);
+    public static URL getPopularUrl(Context c) {
+        return buildCommonApiUrl(c, API_BASE_URL + POPULAR_ENDPOINT);
     }
 
-    public static URL getTopRatedUrl() {
-        return buildCommonApiUrl(API_BASE_URL + TOP_RATED_ENDPOINT);
+    public static URL getTopRatedUrl(Context c) {
+        return buildCommonApiUrl(c, API_BASE_URL + TOP_RATED_ENDPOINT);
     }
 
-    public static URL getMovieDetailUrl(String id) {
+    public static URL getMovieDetailUrl(Context c, String id) {
         String urlString = API_BASE_URL + MOVIE_DETAIL_ENDPOINT;
         urlString = urlString.replace("{id}", id);
-        return buildCommonApiUrl(urlString);
+        return buildCommonApiUrl(c, urlString);
     }
 
-    public static URL getTrailersUrl(String id) {
+    public static URL getTrailersUrl(Context c, String id) {
         String urlString = API_BASE_URL + TRAILERS_ENDPOINT;
         urlString = urlString.replace("{id}", id);
-        return buildCommonApiUrl(urlString);
+        return buildCommonApiUrl(c, urlString);
     }
 
-    public static URL getReviewsUrl(String id) {
+    public static URL getReviewsUrl(Context c, String id) {
         String urlString = API_BASE_URL + REVIEWS_ENDPOINT;
         urlString = urlString.replace("{id}", id);
-        return buildCommonApiUrl(urlString);
+        return buildCommonApiUrl(c, urlString);
     }
 
 }

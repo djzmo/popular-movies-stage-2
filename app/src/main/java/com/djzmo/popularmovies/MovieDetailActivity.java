@@ -347,7 +347,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
 
             String id = strings[0];
-            URL url = NetworkUtils.getMovieDetailUrl(id);
+            URL url = NetworkUtils.getMovieDetailUrl(MovieDetailActivity.this, id);
             MovieInformation movie = new MovieInformation();
 
             try {
@@ -397,7 +397,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
 
             String id = strings[0];
-            URL url = NetworkUtils.getTrailersUrl(id);
+            URL url = NetworkUtils.getTrailersUrl(MovieDetailActivity.this, id);
             VideoInformation[] trailers = null;
 
             try {
@@ -449,7 +449,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
 
             String id = strings[0];
-            URL url = NetworkUtils.getReviewsUrl(id);
+            URL url = NetworkUtils.getReviewsUrl(MovieDetailActivity.this, id);
             ReviewInformation[] reviews = null;
 
             try {
