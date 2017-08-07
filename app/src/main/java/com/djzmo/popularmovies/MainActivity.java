@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity
     public static final int NUM_OF_ITEMS = 20;
     public static final String MOVIES_KEY = "movies";
     public static final String MENU_STATE_KEY = "menu_state";
+    public static final String LIST_STATE_KEY = "list_state";
+    public static final String LIST_POS_KEY = "list_pos";
 
     private RecyclerView mRecyclerView;
     private ProgressBar mLoadingIndicator;
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity
     private Menu mMenu;
     private MovieAdapter mAdapter;
     private String mCurrentDisplay;
+    private int mCurrentPosition;
+    private Parcelable mLayoutState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +52,15 @@ public class MainActivity extends AppCompatActivity
         setTitle(R.string.pop_movies);
 
         mCurrentDisplay = "popular";
+        mCurrentPosition = 0;
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+
         mAdapter = new MovieAdapter(this, this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
-        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_movies);
@@ -76,17 +82,23 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putParcelableArray(MOVIES_KEY, mAdapter.getData());
         outState.putString(MENU_STATE_KEY, mCurrentDisplay);
-        super.onSaveInstanceState(outState);
+        mLayoutState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(LIST_STATE_KEY, mLayoutState);
+        outState.putInt(LIST_POS_KEY, ((GridLayoutManager) mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         MovieInformation[] data = (MovieInformation[]) savedInstanceState.getParcelableArray(MOVIES_KEY);
-        mCurrentDisplay = savedInstanceState.getString(MENU_STATE_KEY);
         mAdapter.setData(data);
+        mCurrentDisplay = savedInstanceState.getString(MENU_STATE_KEY);
+        mLayoutState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+        mCurrentPosition = savedInstanceState.getInt(LIST_POS_KEY);
         showMovieDataView();
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -95,6 +107,12 @@ public class MainActivity extends AppCompatActivity
 
         if(mCurrentDisplay.equals("favorites"))
             loadMovieData(mCurrentDisplay);
+
+        if(mLayoutState != null)
+            mRecyclerView.getLayoutManager().onRestoreInstanceState(mLayoutState);
+
+        if(mCurrentPosition > 0)
+            mRecyclerView.scrollToPosition(mCurrentPosition);
     }
 
     private void loadMovieData(String type) {
@@ -263,7 +281,7 @@ public class MainActivity extends AppCompatActivity
             }
             else {
                 movieInformation = new MovieInformation[NUM_OF_ITEMS];
-                URL url = type.equals("popular") ? NetworkUtils.getPopularUrl() : NetworkUtils.getTopRatedUrl();
+                URL url = type.equals("popular") ? NetworkUtils.getPopularUrl(MainActivity.this) : NetworkUtils.getTopRatedUrl(MainActivity.this);
 
                 try {
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
